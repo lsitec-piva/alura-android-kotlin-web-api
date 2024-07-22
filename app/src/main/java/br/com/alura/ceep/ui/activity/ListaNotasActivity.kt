@@ -35,6 +35,7 @@ class ListaNotasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configuraFab()
+        configuraSwipeRefresh()
         configuraRecyclerView()
         lifecycleScope.launch {
             launch {
@@ -42,6 +43,15 @@ class ListaNotasActivity : AppCompatActivity() {
             }
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 buscaNotas()
+            }
+        }
+    }
+
+    private fun configuraSwipeRefresh() {
+        binding.activityListaNotasSwipe.setOnRefreshListener {
+            lifecycleScope.launch {
+                sincroniza()
+                binding.activityListaNotasSwipe.isRefreshing = false
             }
         }
     }
